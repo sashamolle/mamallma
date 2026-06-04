@@ -11,7 +11,10 @@ const DEFAULT_STATE = {
     targetPhoneOrEmail: '', // Your iMessage contact
     enableNotifications: true,
     reelSummaryStyle: 'concise', // 'concise' or 'detailed'
-    savedTimePerReelMinutes: 15 // 15 minutes of doomscrolling saved per reel bypassed!
+    savedTimePerReelMinutes: 15, // 15 minutes of doomscrolling saved per reel bypassed!
+    notificationChannel: 'imessage', // 'imessage' or 'telegram'
+    telegramBotToken: '',
+    telegramChatId: ''
   },
   messages: [], // Array of intercepted DMs & summaries
   stats: {

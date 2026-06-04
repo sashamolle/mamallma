@@ -39,6 +39,33 @@ async function dispatchIMessage(target, text) {
 }
 
 /**
+ * Sends a Telegram message using the Bot API.
+ */
+async function sendTelegramMessage(token, chatId, text) {
+  const url = `https://api.telegram.org/bot${token}/sendMessage`;
+  try {
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        chat_id: chatId,
+        text: text
+      })
+    });
+    
+    if (!res.ok) {
+      const errText = await res.text();
+      throw new Error(`Telegram API responded with ${res.status}: ${errText}`);
+    }
+    console.log('Notifier: Telegram notification sent successfully.');
+    return true;
+  } catch (err) {
+    console.error('Notifier: Telegram send failed:', err.message);
+    throw err;
+  }
+}
+
+/**
  * Public function to route and dispatch a notification.
  */
 export async function sendNotification(text) {
@@ -49,14 +76,24 @@ export async function sendNotification(text) {
     return false;
   }
   
-  const target = settings.targetPhoneOrEmail;
-  if (!target) {
-    console.warn('Notifier: No target phone number or email set in settings.');
-    return false;
-  }
+  // Auto-detect environment: if not running on macOS (darwin), route via Telegram
+  const useTelegram = settings.notificationChannel === 'telegram' || process.platform !== 'darwin';
   
   try {
-    await dispatchIMessage(target, text);
+    if (useTelegram) {
+      const token = settings.telegramBotToken;
+      const chatId = settings.telegramChatId;
+      if (!token || !chatId) {
+        throw new Error('Telegram notification enabled, but telegramBotToken or telegramChatId is not set in settings.');
+      }
+      await sendTelegramMessage(token, chatId, text);
+    } else {
+      const target = settings.targetPhoneOrEmail;
+      if (!target) {
+        throw new Error('No target phone number or email set in settings for iMessage.');
+      }
+      await dispatchIMessage(target, text);
+    }
     db.incrementNotificationCount();
     return true;
   } catch (err) {
@@ -66,17 +103,26 @@ export async function sendNotification(text) {
 }
 
 /**
- * Sends a test notification to verify AppleScript permissions.
+ * Sends a test notification to verify AppleScript/Telegram permissions.
  */
 export async function sendTestNotification(customTarget = null) {
   const settings = db.getSettings();
-  const target = customTarget || settings.targetPhoneOrEmail;
-  
-  if (!target) {
-    throw new Error('No target phone number or email provided for test.');
-  }
+  const useTelegram = settings.notificationChannel === 'telegram' || process.platform !== 'darwin';
   
   const testMessage = `📬 Mamallma Notification Test\n\nYour Instagram DM filter bot is successfully configured! Messages and Reels will now be summarized and sent here. Keep up the good work beating the addiction! 💪`;
   
-  return await dispatchIMessage(target, testMessage);
+  if (useTelegram) {
+    const token = settings.telegramBotToken;
+    const chatId = customTarget || settings.telegramChatId;
+    if (!token || !chatId) {
+      throw new Error('Telegram bot token or chat ID is missing for test.');
+    }
+    return await sendTelegramMessage(token, chatId, testMessage);
+  } else {
+    const target = customTarget || settings.targetPhoneOrEmail;
+    if (!target) {
+      throw new Error('No target phone number or email provided for test.');
+    }
+    return await dispatchIMessage(target, testMessage);
+  }
 }
