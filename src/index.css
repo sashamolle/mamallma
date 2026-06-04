@@ -1,0 +1,276 @@
+/* Custom Design System for Mamallma Dashboard */
+:root {
+  /* HSL Color System */
+  --bg-main: hsl(224, 25%, 6%);
+  --bg-sidebar: hsl(224, 25%, 4%);
+  --card-bg: rgba(15, 23, 42, 0.45);
+  --card-border: rgba(255, 255, 255, 0.06);
+  --card-border-hover: rgba(255, 255, 255, 0.12);
+  
+  /* Gradients */
+  --grad-primary: linear-gradient(135deg, hsl(330, 85%, 60%) 0%, hsl(265, 85%, 55%) 100%);
+  --grad-safe: linear-gradient(135deg, hsl(160, 85%, 45%) 0%, hsl(185, 85%, 45%) 100%);
+  --grad-warning: linear-gradient(135deg, hsl(35, 90%, 55%) 0%, hsl(15, 90%, 55%) 100%);
+  --grad-glow: radial-gradient(circle, rgba(236, 72, 153, 0.15) 0%, rgba(99, 102, 241, 0) 70%);
+
+  /* Solid Colors */
+  --text-main: hsl(210, 40%, 96%);
+  --text-muted: hsl(215, 20%, 65%);
+  --text-dark: hsl(215, 20%, 45%);
+  
+  --accent-magenta: hsl(330, 85%, 60%);
+  --accent-indigo: hsl(265, 85%, 55%);
+  --accent-emerald: hsl(160, 85%, 45%);
+  
+  /* Shadow & Transitions */
+  --shadow-main: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  --transition-fast: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Base Reset & Fonts */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  overflow-x: hidden;
+  line-height: 1.5;
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.08) 0px, transparent 50%),
+    radial-gradient(at 50% 0%, rgba(236, 72, 153, 0.05) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(79, 70, 229, 0.05) 0px, transparent 50%);
+  background-attachment: fixed;
+}
+
+h1, h2, h3, h4, .font-heading {
+  font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+  letter-spacing: -0.02em;
+  font-weight: 600;
+}
+
+/* Glassmorphism Styles */
+.glass-panel {
+  background: var(--card-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  box-shadow: var(--shadow-main);
+  transition: var(--transition-normal);
+}
+
+.glass-card {
+  background: rgba(30, 41, 59, 0.25);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  padding: 20px;
+  transition: var(--transition-normal);
+  position: relative;
+  overflow: hidden;
+}
+
+.glass-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--card-border-hover);
+  box-shadow: 0 12px 24px -10px rgba(0, 0, 0, 0.5);
+}
+
+.glass-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: transparent;
+  transition: var(--transition-fast);
+}
+
+.glass-card.primary::before {
+  background: var(--grad-primary);
+}
+
+.glass-card.safe::before {
+  background: var(--grad-safe);
+}
+
+.glass-card.warning::before {
+  background: var(--grad-warning);
+}
+
+/* Inputs & Form Elements */
+input[type="text"],
+input[type="password"],
+input[type="number"],
+select,
+textarea {
+  width: 100%;
+  padding: 12px 16px;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid var(--card-border);
+  border-radius: 8px;
+  color: var(--text-main);
+  font-family: inherit;
+  font-size: 14px;
+  outline: none;
+  transition: var(--transition-fast);
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="number"]:focus,
+select:focus,
+textarea:focus {
+  border-color: hsl(265, 85%, 65%);
+  box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.15);
+  background: rgba(15, 23, 42, 0.8);
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 14px;
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  transition: var(--transition-fast);
+}
+
+.btn-primary {
+  background: var(--grad-primary);
+  color: white;
+  box-shadow: 0 4px 14px 0 rgba(236, 72, 153, 0.3);
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px 0 rgba(236, 72, 153, 0.4);
+  filter: brightness(1.05);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--card-border);
+  color: var(--text-main);
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: var(--card-border-hover);
+}
+
+.btn-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* Pulse Animation for Connection Dots */
+.pulse-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  position: relative;
+}
+
+.pulse-dot.green {
+  background-color: var(--accent-emerald);
+  box-shadow: 0 0 10px var(--accent-emerald);
+}
+
+.pulse-dot.green::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background-color: var(--accent-emerald);
+  opacity: 0.8;
+  animation: pulse-out 1.8s infinite ease-out;
+}
+
+.pulse-dot.red {
+  background-color: hsl(355, 85%, 55%);
+  box-shadow: 0 0 10px hsl(355, 85%, 55%);
+}
+
+.pulse-dot.red::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background-color: hsl(355, 85%, 55%);
+  opacity: 0.8;
+  animation: pulse-out 1.8s infinite ease-out;
+}
+
+.pulse-dot.orange {
+  background-color: hsl(35, 90%, 55%);
+  box-shadow: 0 0 10px hsl(35, 90%, 55%);
+}
+
+.pulse-dot.orange::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background-color: hsl(35, 90%, 55%);
+  opacity: 0.8;
+  animation: pulse-out 1.8s infinite ease-out;
+}
+
+@keyframes pulse-out {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(3.5);
+    opacity: 0;
+  }
+}

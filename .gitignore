@@ -1,0 +1,9 @@
+# Mamallma Git Ignore list
+node_modules/
+dist/
+data.json
+.env
+raw_*.json
+cookies.json
+.DS_Store
+*.log

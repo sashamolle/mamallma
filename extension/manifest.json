@@ -1,0 +1,18 @@
+{
+  "manifest_version": 3,
+  "name": "Mamallma: Instagram Interceptor",
+  "version": "1.0.0",
+  "description": "Stealthily routes Instagram DMs and Reels to your local Mamallma server.",
+  "background": {
+    "service_worker": "background.js"
+  },
+  "permissions": [
+    "cookies",
+    "alarms",
+    "storage"
+  ],
+  "host_permissions": [
+    "https://*.instagram.com/*",
+    "http://localhost:3000/*"
+  ]
+}
